@@ -2,3 +2,5 @@ openai
 langchain
 streamlit
 python-dotenv
+wikipedia
+numexpr

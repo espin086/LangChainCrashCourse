@@ -1,24 +1,20 @@
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
+import streamlit as st
+
+
+import llm_helper
+
 
 load_dotenv()
 
+st.title("Pet Namer")
 
-llm = ChatOpenAI()
+animal_type = st.sidebar.selectbox("Select animal type", ["dog", "cat", "bird", "fish"])
 
+pet_color = st.sidebar.text_area(f"What is your {animal_type} color?", max_chars=15)
 
-prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", "You are a world class dog namer."),
-        ("user", "{input}"),
-    ]
-)
+number_of_names = st.sidebar.slider("Number of names", 1, 10, 5)
 
-output_parser = StrOutputParser()
+output = llm_helper.pet_namer(animal_type, number_of_names, pet_color)
 
-chain = prompt | llm | output_parser
-
-response = chain.invoke({"input": "I have a new dog, what should I name it?"})
-print(response)
+st.write(output)
